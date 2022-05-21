@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="kaptcha-2.3.2 (2)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/kaptcha-2.3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javassist-3.20.0-GA.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gson-2.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ognl-3.1.26.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mysql-connector-java-5.1.45-bin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/druid-1.1.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/attoparser-2.0.5.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.7.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/thymeleaf-3.0.12.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/unbescape-1.1.6.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
