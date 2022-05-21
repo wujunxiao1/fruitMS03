@@ -9,8 +9,9 @@
     <div id="div_fruit_list">
         <p class="center f30">欢迎使用水果库存后台管理系统</p>
         <div style="border: 0px solid red;width: 60%;margin-left: 20%;text-align: right">
-            <form th:action="@{111}" method="post">
-                请输入查询关键字:<input type="text" name="keyword" style="float: left"/>
+            <form th:action="@{/111}" method="post" style="float:left;width:60%;margin-left:20%;">
+                <input type="hidden" name="oper" value="search"/>
+                请输入关键字：<input type="text" name="keyword" th:value="${session.keyword}"/>
                 <input type="submit" value="查询" class="btn"/>
             </form>
             <a th:href="@{/add.html}" style="border: 0px solid blue;margin-bottom: 4px;">添加库存记录</a>
@@ -36,8 +37,10 @@
         </table>
         <div style="width: 60%;margin-left: 20%;padding-top: 4px" class="center">
             <input type="button" value="首页" class="btn" th:onclick="page(1)"/>
-            <input type="button" value="上一页" class="btn" th:onclick="|page(${session.pageNo - 1})|"th:disabled="|${session.pageNo == 1}|"/>
-            <input type="button" value="下一页" class="btn" th:onclick="|page(${session.pageNo + 1})|" th:disabled="|${session.lastPage == session.pageNo}|"/>
+            <input type="button" value="上一页" class="btn" th:onclick="|page(${session.pageNo - 1})|"
+                   th:disabled="|${session.pageNo == 1}|"/>
+            <input type="button" value="下一页" class="btn" th:onclick="|page(${session.pageNo + 1})|"
+                   th:disabled="|${session.lastPage == session.pageNo}|"/>
             <input type="button" value="尾页" class="btn" th:onclick="|page(${session.lastPage})|"/>
         </div>
     </div>

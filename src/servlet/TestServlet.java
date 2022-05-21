@@ -1,7 +1,9 @@
 package servlet;
 
+import dao.FruitDAO;
 import dao.FruitDAOImpl;
 import domain.Fruit;
+import utils.StringUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,39 +17,71 @@ import java.util.List;
 public class TestServlet extends ViewBaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req,resp);
+        doGet(req, resp);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
-        Integer pageNo = 1 ;
-        HttpSession session = request.getSession();
-        String oper = request.getParameter("oper");
-        String keyWord = null;
-        if (oper != null && "search".equals(oper)){
-            pageNo = 1;
-            keyWord = request.getParameter("keyword");
-            if (keyWord == null){
-                keyWord = "";
-            }
-            session.setAttribute("keyword",keyWord);
-        }else {
-            String pageNostr = request.getParameter("pageNo");
-            if (pageNostr != null){
-                pageNo = Integer.parseInt(pageNostr);
-            }
-            session.getAttribute();
-        }
-        FruitDAOImpl fruitDAO = new FruitDAOImpl();
+        HttpSession session = request.getSession() ;
 
-        session.setAttribute("pageNo", pageNo);
-        int fruitCount = fruitDAO.getFruitCount();
-        int lastPage = (fruitCount + 5 -1) / 5;
-        session.setAttribute("lastPage",lastPage);
-        List<Fruit> fruitList = fruitDAO.getFruitList(pageNo);
-        //保存到session作用域
+        // 设置当前页，默认值1
+        Integer pageNo = 1 ;
+
+        String oper = request.getParameter("oper");
+
+        //如果oper!=null 说明 通过表单的查询按钮点击过来的
+        //如果oper是空的，说明 不是通过表单的查询按钮点击过来的
+        String keyword = null ;
+        if(StringUtil.isNotEmpty(oper) && "search".equals(oper)){
+            //说明是点击表单查询发送过来的请求
+            //此时，pageNo应该还原为1 ， keyword应该从请求参数中获取
+            pageNo = 1 ;
+            keyword = request.getParameter("keyword");
+            //如果keyword为null，需要设置为空字符串""，否则查询时会拼接成 %null% , 我们期望的是 %%
+            if(StringUtil.isEmpty(keyword)){
+                keyword = "" ;
+            }
+            //将keyword保存（覆盖）到session中
+            session.setAttribute("keyword",keyword);
+        }else{
+            //说明此处不是点击表单查询发送过来的请求（比如点击下面的上一页下一页或者直接在地址栏输入网址）
+            //此时keyword应该从session作用域获取
+            String pageNoStr = request.getParameter("pageNo");
+            if(StringUtil.isNotEmpty(pageNoStr)){
+                pageNo = Integer.parseInt(pageNoStr);   //如果从请求中读取到pageNo，则类型转换。否则，pageNo默认就是1
+            }
+            //如果不是点击的查询按钮，那么查询是基于session中保存的现有keyword进行查询
+            Object keywordObj = session.getAttribute("keyword");
+            if(keywordObj!=null){
+                keyword = (String)keywordObj ;
+            }else{
+                keyword = "" ;
+            }
+        }
+
+        // 重新更新当前页的值
+        session.setAttribute("pageNo",pageNo);
+
+        FruitDAOImpl fruitDAO = new FruitDAOImpl();
+        List<Fruit> fruitList = fruitDAO.getFruitList(keyword , pageNo);
         session.setAttribute("fruitList",fruitList);
+
+        //总记录条数
+        int fruitCount = fruitDAO.getFruitCount(keyword);
+        //总页数
+        int pageCount = (fruitCount+5-1)/5 ;
+        /*
+        总记录条数       总页数
+        1               1
+        5               1
+        6               2
+        10              2
+        11              3
+        fruitCount      (fruitCount+5-1)/5
+         */
+        session.setAttribute("pageCount",pageCount);
+
         //此处的视图名称是 index
         //那么thymeleaf会将这个 逻辑视图名称 对应到 物理视图 名称上去
         //逻辑视图名称 ：   index
