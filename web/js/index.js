@@ -4,6 +4,6 @@ function delfruit(fid) {
     }
 }
 
-function page() {
+function page(pageNo) {
     window.location.href = '111?pageNo=' + pageNo;
 }

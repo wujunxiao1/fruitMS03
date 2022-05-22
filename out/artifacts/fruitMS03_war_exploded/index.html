@@ -34,14 +34,15 @@
                 <!--                <td><img src="imgs/del.jpg" class="delImg" th:onclick="'delfruit('+${fruit.fid}+')'"/></td>-->
                 <td><img src="imgs/del.jpg" class="delImg" th:onclick="|delfruit(${fruit.fid})|"/></td>
             </tr>
+            <!--            通过从数据库得到的数据来进行渲染-->
         </table>
         <div style="width: 60%;margin-left: 20%;padding-top: 4px" class="center">
             <input type="button" value="首页" class="btn" th:onclick="page(1)"/>
             <input type="button" value="上一页" class="btn" th:onclick="|page(${session.pageNo - 1})|"
                    th:disabled="|${session.pageNo == 1}|"/>
             <input type="button" value="下一页" class="btn" th:onclick="|page(${session.pageNo + 1})|"
-                   th:disabled="|${session.lastPage == session.pageNo}|"/>
-            <input type="button" value="尾页" class="btn" th:onclick="|page(${session.lastPage})|"/>
+                   th:disabled="|${session.pageCount == session.pageNo}|"/>
+            <input type="button" value="尾页" class="btn" th:onclick="|page(${session.pageCount})|"/>
         </div>
     </div>
 </div>
