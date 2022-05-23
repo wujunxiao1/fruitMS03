@@ -7,7 +7,8 @@
 <div id="div_container">
     <div id="div_fruit_list">
         <p class="center f30">编辑库存信息2</p>
-        <form method="post" th:action="@{/update.do}" th:object="${fruit}">
+        <form method="post" th:action="@{/fruit.do}" th:object="${fruit}">
+            <input type="hidden" name="operate" value="update">
             <input type="hidden" name="fid" th:value="*{fid}"/>
             <table id="tbl_fruit">
                 <tr>

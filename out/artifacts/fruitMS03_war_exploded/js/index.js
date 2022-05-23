@@ -1,9 +1,9 @@
 function delfruit(fid) {
     if (confirm("是否确认删除吗")) {
-        window.location.href = 'del.do?fid=' + fid;
+        window.location.href = 'fruit.do?fid=' + fid + "&operate = delete";
     }
 }
 
 function page(pageNo) {
-    window.location.href = '111?pageNo=' + pageNo;
+    window.location.href = 'fruit.do?pageNo=' + pageNo;
 }
