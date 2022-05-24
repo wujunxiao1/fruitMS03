@@ -1,47 +1,34 @@
-package servlet;
+package server;
 
 import dao.FruitDAOImpl;
 import domain.Fruit;
 import utils.StringUtil;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
-@WebServlet("/fruit.do")
-public class FruitServlet extends ViewBaseServlet {
-    private FruitDAOImpl fruitDAO = new FruitDAOImpl();
+public class FruitController extends ViewBaseServlet {
 
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("utf-8");
-        String operate = request.getParameter("operate");
-        if (operate == null) {
-            operate = "index";
-        }
-        switch (operate) {
-            case "index":
-                index(request, response);
-                break;
-            case "add":
-                add(request, response);
-                break;
-            case "delete":
-                delete(request, response);
-                break;
-            case "update":
-                update(request, response);
-                break;
-            case "edit":
-                edit(request,response);
-                break;
+    private ServletContext servletContext;
+
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
+        try {
+            super.init(servletContext);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
         }
     }
 
+    private FruitDAOImpl fruitDAO = new FruitDAOImpl();
     private void index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
