@@ -15,11 +15,12 @@ import java.io.IOException;
 public class ViewBaseServlet extends HttpServlet {
 
     private TemplateEngine templateEngine;
-    private ServletContext servletContext ;
-    public void init(ServletContext servletContext) throws ServletException {
-        this.servletContext = servletContext ;
+
+    @Override
+    public void init() throws ServletException {
+
         // 1.获取ServletContext对象
-        //ServletContext servletContext = this.getServletContext();
+        ServletContext servletContext = this.getServletContext();
 
         // 2.创建Thymeleaf解析器对象
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -60,7 +61,7 @@ public class ViewBaseServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
 
         // 2.创建WebContext对象
-        WebContext webContext = new WebContext(req, resp, this.servletContext);
+        WebContext webContext = new WebContext(req, resp, getServletContext());
 
         // 3.处理模板数据
         templateEngine.process(templateName, webContext, resp.getWriter());
