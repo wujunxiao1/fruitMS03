@@ -1,5 +1,7 @@
 package server;
 
+import biz.FruitService;
+import biz.implFruitService;
 import com.sun.deploy.net.HttpRequest;
 import dao.FruitDAOImpl;
 import domain.Fruit;
@@ -11,7 +13,7 @@ import java.util.List;
 
 public class FruitController {
 
-    private FruitDAOImpl fruitDAO = new FruitDAOImpl();
+    private FruitService fruitService = null;
 
     private String index(String oper, String keyword, Integer pageNo, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -34,34 +36,33 @@ public class FruitController {
         }
         session.setAttribute("pageNo", pageNo);
 
-        List<Fruit> fruitList = fruitDAO.getFruitList(keyword, pageNo);
+        List<Fruit> fruitList = fruitService.getFruitList(keyword, pageNo);
         session.setAttribute("fruitList", fruitList);
-        int fruitCount = fruitDAO.getFruitCount(keyword);
-        int pageCount = (fruitCount + 5 - 1) / 5;
+        int pageCount = fruitService.getPageCount(keyword);
 
         session.setAttribute("pageCount", pageCount);
         return "index";
     }
 
-    private String add(String fname, Integer price, Integer fcount, String remark) {
-        fruitDAO.addFruit(new Fruit(0, fname, price, fcount, remark));
+    private String add(String fName, Integer price, Integer fcount, String remark) {
+        fruitService.addFruit(new Fruit(0, fName, price, fcount, remark));
         return "redirect:fruit.do";
     }
 
     private String delete(Integer fid) {
-        fruitDAO.delFruit(fid);
+        fruitService.delFruit(fid);
         return "redirect:fruit.do";
     }
 
     private String edit(Integer fid, HttpServletRequest request) {
-        Fruit fruitByFid = fruitDAO.getFruitByFid(fid);
+        Fruit fruitByFid = fruitService.getFruitById(fid);
         request.setAttribute("fruit", fruitByFid);
         return "edit";
 
     }
 
     private String update(Integer fid, String fname, Integer price, Integer fcount, String remark) {
-        fruitDAO.updateFruit(new Fruit(fid, fname, price, fcount, remark));
+        fruitService.updateFruit(new Fruit(fid, fname, price, fcount, remark));
         return "redirect:fruit.do";
     }
 }

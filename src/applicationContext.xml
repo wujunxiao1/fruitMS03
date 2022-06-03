@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <beans>
-    <bean id="fruit" class="server.FruitController"/>
+    <bean id="fruitDAO" class="dao.FruitDAOImpl"/>
+    <bean id="fruitService" class="biz.implFruitService">
+<!--property标签用来表示属性，name表示属性名字，ref表示引用其他id的值-->
+        <property name="fruitDAO" ref="fruitDAO"/>
+    </bean>
+    <bean id="fruit" class="server.FruitController">
+        <property name="fruitService" ref="fruitService"/>
+    </bean>
     
 </beans>
