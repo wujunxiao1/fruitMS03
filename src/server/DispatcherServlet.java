@@ -15,7 +15,7 @@ import java.lang.reflect.Parameter;
 
 @WebServlet("*.do")
 public class DispatcherServlet extends ViewBaseServlet {
-    private BeanFactory beanFactory;
+    private BeanFactory beanFactory = null;
 
     public DispatcherServlet() {
     }
@@ -23,7 +23,8 @@ public class DispatcherServlet extends ViewBaseServlet {
     public void init() {
         try {
             super.init();
-            beanFactory = new ClassPathXmlApplicationContext();
+//            beanFactory = new ClassPathXmlApplicationContext();
+            beanFactory = (BeanFactory) getServletContext().getAttribute("beanFactory");
         } catch (ServletException e) {
             throw new RuntimeException(e);
         }
@@ -32,7 +33,7 @@ public class DispatcherServlet extends ViewBaseServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //设置编码
-        request.setCharacterEncoding("UTF-8");
+        //request.setCharacterEncoding("UTF-8");
         //假设url是：  http://localhost:8080/pro15/hello.do
         //那么servletPath是：    /hello.do
         // 我的思路是：

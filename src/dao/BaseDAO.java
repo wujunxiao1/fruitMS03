@@ -1,5 +1,7 @@
 package dao;
 
+import utils.ConnectionUtil;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -8,10 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseDAO<T> {
-    public final String DRIVER = "com.mysql.jdbc.Driver";
-    public final String URL = "jdbc:mysql://localhost:3306/fruitDB?useUnicode=true&characterEncoding=utf-8&useSSL=false";
-    public final String USER = "root";
-    public final String PWD = "020611";
 
     protected Connection conn;
     protected PreparedStatement psmt;
@@ -38,31 +36,11 @@ public abstract class BaseDAO<T> {
     }
 
     protected Connection getConn() {
-        try {
-            //1.加载驱动
-            Class.forName(DRIVER);
-            //2.通过驱动管理器获取连接对象
-            return DriverManager.getConnection(URL, USER, PWD);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return ConnectionUtil.getConnection();
     }
 
     protected void close(ResultSet rs, PreparedStatement psmt, Connection conn) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-            if (psmt != null) {
-                psmt.close();
-            }
-            if (conn != null && !conn.isClosed()) {
-                conn.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     //给预处理命令对象设置参数

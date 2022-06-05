@@ -17,7 +17,7 @@ public class FruitController {
 
     private String index(String oper, String keyword, Integer pageNo, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if(pageNo == null){
+        if (pageNo == null) {
             pageNo = 1;
         }
         if (StringUtil.isNotEmpty(oper) && "search".equals(oper)) {
